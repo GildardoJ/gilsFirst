@@ -10,13 +10,12 @@ import UIKit
 
 class MoviesViewController: UIViewController , UITableViewDataSource, UITableViewDelegate {
     
-    
-    
     @IBOutlet weak var tableView: UITableView!
+    
     var  movies = [[String:Any]]()
+    
     override func viewDidLoad() {
-        super.viewDidLoad()
-        
+        super.viewDidLoad()        
         
         tableView.dataSource = self
         tableView.delegate = self
@@ -55,12 +54,19 @@ class MoviesViewController: UIViewController , UITableViewDataSource, UITableVie
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = UITableViewCell()
+        let cell = tableView.dequeueReusableCell(withIdentifier: "MovieCell") as! MovieCell
         
         let movie = movies[indexPath.row]
         let title = movie["title"] as! String
-        cell.textLabel!.text = title
+        let synopsis = movie["overview"] as! String
         
+        
+        cell.titleLabel.text = title
+        cell.synopsisLabel.text = synopsis
+        
+        let baseUrl = "https://image.tmdb.org/t/p/w185"
+        let posterPath = movie["poster_path"] as! String
+        let posterUrl = URL(string: baseUrl + posterPath)
         return cell
         
     }
